@@ -1,4 +1,4 @@
-import pygame
+import pygame, sys
 from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
 class Game:
     def __init__(self):
@@ -22,6 +22,7 @@ class Game:
     def events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                sys.exit()
                 self.playing = False
     def update(self):
         pass
@@ -39,3 +40,22 @@ class Game:
             self.screen.blit(BG, (image_width + self.x_pos_bg, self.y_pos_bg))
             self.x_pos_bg = 0
         self.x_pos_bg -= self.game_speed
+                #pygame.display.update()
+
+      #        # bg_image = pygame.image.load("Track.png")
+       # image_width = BG.get_width()
+       
+       # bg_track = transform.scale(SCREEN_WIDTH,SCREEN_HEIGHT)
+        #time_done=0
+        #self.screen.blit(BG, (time_done ,self.y_pos_bg))
+        #self.screen.blit(BG, (self.x_pos_bg +image_width+time_done,self.y_pos_bg))
+        #if time_done ==-image_width:
+         #   self.screen.blit(BG, (self.x_pos_bg+time_done+image_width,self.y_pos_bg))
+        #time_done-=time_done
+        
+        #pygame.display.update() 
+       #
+       # self.screen.blit(BG, (self.x_pos_bg, self.y_pos_bg ))
+       # if self.x_pos_bg <=-image_width:
+        #    self.screen.blit(BG, (1*image_width+self.x_pos_bg, self.y_pos_bg ))
+       #     self.x_pos_bg=0
