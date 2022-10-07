@@ -1,12 +1,12 @@
-import pygame, sys
-from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
+import pygame, sys, random
+from dino_runner.utils.constants import CLOUD, BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
 from dino_runner.components.obstacles.obstaclesmanager import ObstacleManager 
 from dino_runner.components.dinosaur.dinosaur import Dinosaur
 from dino_runner.components.score_menu.text_utils import *
 from dino_runner.components.player_hearts.player_heart_manager import PlayerHeartManager    
-from dino_runner.components.powerups_dino import PowerUpManager
+from dino_runner.components.powerups_dino.powerupmanager import PowerUpManager
 White = (255, 255, 255)
-height_score = half_screen_height+50
+
 
 class Game:
     def __init__(self):
@@ -15,6 +15,7 @@ class Game:
         pygame.display.set_icon(ICON)
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
+        self.clock_cloud = pygame.time.Clock()
         self.playing = False
         self.game_speed = 20
         self.x_pos_bg = 0
@@ -33,14 +34,22 @@ class Game:
     def run(self):
         # Game loop: events - update - draw
         self.obstacle_manager.reset_obstacles(self)
-        self.player_heart_manager.reset_heart()
-        self.power_up_manager.reset_power_ups(self.ponts)
+        self.player_heart_manager.reset_hearts()
+        self.power_up_manager.reset_power_ups(self.points)
         self.playing = True
         while self.playing:
             self.events()
             self.update()
             self.draw()
+            self.cloudy(CLOUD)
         #pygame.quit()
+    
+    def cloudy(self,image_use):
+        x = random.randrange(20, 1100)
+        y = random.randrange(100,350)
+        self.screen.blit(image_use, (x,y) )
+        pygame.display.flip()
+        self.clock_cloud.tick(100)
     def events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -56,6 +65,7 @@ class Game:
         self.screen.fill(White)
         self.draw_background()
         self.player.draw(self.screen)
+        self.cloudy(CLOUD)
         self.obstacle_manager.draw(self.screen)
         self.score()
         self.player_heart_manager.draw(self.screen)
@@ -76,14 +86,14 @@ class Game:
         if self.points%100==0:#aumento spseed por score 100
             self.game_speed+=1
         
-        score,score_rect=get_score_element()
+        score,score_rect=get_score_element(self.points)
         self.screen.blit(score, score_rect)
         self.player.check_invincibility(self.screen)
 
     def show_menu(self):
         self.running=True
         #white background
-        self.screen.fill(white_color)
+        self.screen.fill(White)
         #print elements in menu
         self.print_menu_elements(self.death_count)
 
@@ -101,18 +111,19 @@ class Game:
             self.screen.blit(text,text_rect)
         elif death_count>0:
             text,text_rect=get_centered_message("Press any key to Restart")
-            score,score_rect=get_centered_message("Your score : "+ str(self.points), height_score)
+            score,score_rect=get_centered_message("Your score : "+ str(self.points), 
+                                                                                    height_score = half_screen_height+50)
 
             self.screen.blit(score,score_rect)
             self.screen.blit(text, text_rect)
 
     def handle_key_events_on_menu(self):
-        for event in pyagme.event.get():
+        for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 print("Dino: Good Bye!!!")
                 self.running=False
                 self.playing=False
-                pygame
+                pygame.display.quit()
                 pygame.quit()
                 exit()
 

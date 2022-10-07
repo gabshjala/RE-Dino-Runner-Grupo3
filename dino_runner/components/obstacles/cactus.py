@@ -6,4 +6,6 @@ class Cactus(Obstacle):
         self.type = random.randint(0,2)#de random lib
         super().__init__(image,self.type) #referencia a class padre
         self.rect.y = 325
+
+    
         
