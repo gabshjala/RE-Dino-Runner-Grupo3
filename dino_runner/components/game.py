@@ -5,8 +5,8 @@ from dino_runner.components.dinosaur.dinosaur import Dinosaur
 from dino_runner.components.score_menu.text_utils import *
 from dino_runner.components.player_hearts.player_heart_manager import PlayerHeartManager    
 from dino_runner.components.powerups_dino.powerupmanager import PowerUpManager
-White = (255, 255, 255)
-
+Colors_bg=[(255, 255, 255), (240, 103, 10),(27,101,226),(164,196,0), (0,171,169)]
+x = random.randint(0, 4)
 
 class Game:
     def __init__(self):
@@ -62,7 +62,7 @@ class Game:
         self.power_up_manager.update(self.points,self.game_speed,self.player)
     def draw(self):
         self.clock.tick(FPS)
-        self.screen.fill(White)
+        self.screen.fill(Colors_bg[x])
         self.draw_background()
         self.player.draw(self.screen)
         self.cloudy(CLOUD)
@@ -93,7 +93,7 @@ class Game:
     def show_menu(self):
         self.running=True
         #white background
-        self.screen.fill(White)
+        self.screen.fill(Colors_bg[x])
         #print elements in menu
         self.print_menu_elements(self.death_count)
 
@@ -111,8 +111,8 @@ class Game:
             self.screen.blit(text,text_rect)
         elif death_count>0:
             text,text_rect=get_centered_message("Press any key to Restart")
-            score,score_rect=get_centered_message("Your score : "+ str(self.points), 
-                                                                                    height_score = half_screen_height+50)
+            score,score_rect=get_centered_message((f"Your score : {str(self.points)}"), 
+                                                                height= half_screen_height+50)
 
             self.screen.blit(score,score_rect)
             self.screen.blit(text, text_rect)
@@ -129,3 +129,4 @@ class Game:
 
             if event.type == pygame.KEYDOWN:
                 self.run()
+

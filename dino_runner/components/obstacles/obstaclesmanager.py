@@ -32,7 +32,7 @@ class ObstacleManager:
                         game.death_count+=1
                         break
                 else:
-                    self.obstacle.remove(obstacle)
+                    self.obstacles.remove(obstacle)
 
 
 
